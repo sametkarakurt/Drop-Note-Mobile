@@ -1,12 +1,17 @@
-import * as React from "react";
+import React, { useState, useContext } from "react";
 import { Text, View, TextInput } from "react-native";
 import { Button } from "@rneui/themed";
-function TakeNote() {
+import NoteService from "../../Services/noteService";
+import { Context } from "../../Store/context";
+const TakeNote = ({ navigation, route }) => {
+  const context = useContext(Context);
+  const Service = new NoteService();
+  const [note, setNote] = useState();
   return (
     <View style={{ justifyContent: "center", alignItems: "center" }}>
       <TextInput
         multiline
-        onChangeText={(text) => console.log(text)}
+        onChangeText={(text) => setNote(text)}
         style={{
           color: "white",
           padding: 10,
@@ -17,11 +22,26 @@ function TakeNote() {
           marginBottom: 20,
         }}
       />
-      <Button buttonStyle={{ borderRadius: 5 }} size="lg" color="black">
+      <Button
+        onPress={async () => {
+          await Service.postNote(
+            {
+              notetext: note,
+              isanonymus: false,
+            },
+            route.params.key
+          );
+          context.changeNoteSituation();
+          navigation.goBack();
+        }}
+        buttonStyle={{ borderRadius: 5 }}
+        size="lg"
+        color="black"
+      >
         Gönder
       </Button>
     </View>
   );
-}
+};
 
 export default TakeNote;

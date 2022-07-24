@@ -1,12 +1,31 @@
+import React, { useContext } from "react";
 import axios from "axios";
-const url = "http://localhost:3000/";
-const fetchNote = async () => {
-  var res = await axios.get(url);
-  if (res.status == 200) {
-    return res.body;
-  } else {
-    return false;
-  }
-};
+import { Context } from "../Store/context";
+class NoteService {
+  context = useContext(Context);
+
+  fetchNote = async (key) => {
+    var res = await axios
+      .create({
+        baseURL: "http://localhost:3000/notes",
+        headers: {
+          access_token: this.context.accessToken,
+        },
+      })
+      .get(`/${key}`);
+    return res.data;
+  };
+
+  postNote = (data, key) => {
+    axios
+      .create({
+        baseURL: "http://localhost:3000/notes",
+        headers: {
+          access_token: this.context.accessToken,
+        },
+      })
+      .post(`/${key}`, data);
+  };
+}
 
 export default NoteService;
