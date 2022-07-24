@@ -7,6 +7,9 @@ import TakeNote from "./src/Screens/TakeNote/takeNote";
 import BottomTabNavigator from "./src/Components/BottomTabNavigator/BottomTabNavigator";
 import NoteDetail from "./src/Screens/NoteDetail/NoteDetail";
 import ContextProvider from "./src/Store/context";
+import WelcomeScreen from "./src/Screens/WelcomeScreen/welcomeScreen";
+import LoginScreen from "./src/Screens/LoginScreen/loginScreen";
+import RegisterScreen from "./src/Screens/RegisterScreen/registerScreen";
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -15,6 +18,21 @@ export default function App() {
     <ContextProvider>
       <NavigationContainer>
         <Stack.Navigator>
+          <Stack.Screen
+            name="WelcomeScreen"
+            options={{ headerShown: false }}
+            component={WelcomeScreen}
+          />
+          <Stack.Screen
+            name="LoginScreen"
+            options={{ headerShown: false }}
+            component={LoginScreen}
+          />
+          <Stack.Screen
+            name="RegisterScreen"
+            options={{ headerShown: false }}
+            component={RegisterScreen}
+          />
           <Stack.Screen
             name="HomeTabNavigator"
             options={{ headerShown: false }}
