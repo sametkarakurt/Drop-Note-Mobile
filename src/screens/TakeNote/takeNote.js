@@ -4,6 +4,7 @@ import { Button } from "@rneui/themed";
 import NoteService from "../../Services/noteService";
 import { Context } from "../../Store/context";
 import { useAuth } from "../../Store/AuthContext";
+
 const TakeNote = ({ navigation, route }) => {
   const context = useContext(Context);
   const [user] = useAuth();
