@@ -1,20 +1,14 @@
 import React, { createContext, useState } from "react";
-
+import axios from "axios";
 export const Context = createContext({
-  accessToken: "U2FsdGVkX19SVMs1Gw1lIqmA6tBPSjslzK3No3bpNC8=",
+  accessToken: null,
   notesSituation: false,
 });
 
 function ContextProvider({ children }) {
-  const [accessToken, setAccessToken] = useState(
-    "U2FsdGVkX19SVMs1Gw1lIqmA6tBPSjslzK3No3bpNC8="
-  );
+  const [accessToken, setAccessToken] = useState();
 
   const [notesSituation, setNoteSituation] = useState(false);
-
-  function changeToken(token) {
-    setAccessToken(token);
-  }
 
   function changeNoteSituation() {
     setNoteSituation(notesSituation === false ? true : false);

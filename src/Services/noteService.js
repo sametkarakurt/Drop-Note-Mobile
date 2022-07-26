@@ -2,6 +2,9 @@ import React, { useContext } from "react";
 import axios from "axios";
 import { Context } from "../Store/context";
 class NoteService {
+  constructor(token) {
+    this.token = token;
+  }
   context = useContext(Context);
 
   fetchNote = async (key) => {
@@ -9,7 +12,7 @@ class NoteService {
       .create({
         baseURL: "http://localhost:3000/notes",
         headers: {
-          access_token: this.context.accessToken,
+          access_token: this.token,
         },
       })
       .get(`/${key}`);
@@ -21,7 +24,7 @@ class NoteService {
       .create({
         baseURL: "http://localhost:3000/notes",
         headers: {
-          access_token: this.context.accessToken,
+          access_token: this.token,
         },
       })
       .post(`/${key}`, data);

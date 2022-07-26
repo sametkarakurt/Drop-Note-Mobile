@@ -4,8 +4,8 @@ import { FAB } from "@rneui/themed";
 import NoteCard from "../../Components/NoteCard/noteCard";
 import NoteService from "../../Services/noteService";
 import { Context } from "../../Store/context";
+import { useAuth } from "../../Store/AuthContext";
 import { LogBox } from "react-native";
-
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state.",
 ]);
@@ -14,8 +14,9 @@ const renderItem = (item) => <NoteCard item={item} />;
 
 const NoteDetail = ({ navigation, route }) => {
   const context = useContext(Context);
+  const [user] = useAuth();
   const [data, setData] = useState([]);
-  const Service = new NoteService();
+  const Service = new NoteService(user);
   useEffect(() => {
     Service.fetchNote(route.params.key).then((response) => {
       setData(response);

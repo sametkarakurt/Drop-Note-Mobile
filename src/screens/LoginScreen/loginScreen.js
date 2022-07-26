@@ -10,34 +10,66 @@ import {
 import { StyleSheet } from "react-native";
 import { Button } from "@rneui/themed";
 const { width: WIDTH } = Dimensions.get("window");
+import UserService from "../../Services/userService";
+import { Context } from "../../Store/context";
+import { useAuth } from "../../Store/AuthContext";
 const LoginScreen = ({ navigation }) => {
+  const [user, setUser] = useAuth();
   const welcomeText = "Welcome back! Glad to see you, Again!";
   const emailPlaceholder = "Enter your email";
   const passwordPlaceholder = "Enter your password";
 
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const Service = new UserService();
+
+  const context = useContext(Context);
+
   return (
     <SafeAreaView>
       <View styles={styles.container}>
-        <Button buttonStyle={styles.backButton} onPress={()=> {navigation.goBack()}}>
+        <Button
+          buttonStyle={styles.backButton}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
           <Image
             style={styles.backImage}
             source={require("/Users/sametkarakurt/Drop-Note-Mobile/assets/back_arrow.png")}
           />
         </Button>
         <Text style={styles.welcomeText}>{welcomeText}</Text>
-        <TextInput style={styles.inputEmail} placeholder={emailPlaceholder} />
+        <TextInput
+          style={styles.inputEmail}
+          placeholder={emailPlaceholder}
+          onChangeText={(text) => setEmail(text)}
+        />
         <TextInput
           style={styles.inputPassword}
           placeholder={passwordPlaceholder}
+          onChangeText={(text) => setPassword(text)}
         />
 
         <Button
-          onPress={() => {}}
+          onPress={async () => {
+            const data = {
+              email: email,
+              password: password,
+            };
+            const res = await Service.postLoginUser(data);
+
+            if (res.status == 200) {
+              setUser(res.data.token);
+            }
+          }}
           containerStyle={styles.loginButtonContainer}
           buttonStyle={styles.loginButton}
         >
           Login
         </Button>
+        <Text>{user}</Text>
       </View>
     </SafeAreaView>
   );

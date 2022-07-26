@@ -10,6 +10,8 @@ import {
 import { StyleSheet } from "react-native";
 import { Button } from "@rneui/themed";
 const { width: WIDTH } = Dimensions.get("window");
+import UserService from "../../Services/userService";
+import AwesomeAlert from "react-native-awesome-alerts";
 const RegisterScreen = ({ navigation }) => {
   const welcomeText = "Hello! Register to get started";
   const emailPlaceholder = "Email";
@@ -17,6 +19,18 @@ const RegisterScreen = ({ navigation }) => {
   const passwordPlaceholder = "Password";
   const confirmPasswordPlaceholder = "Confirm password";
 
+  const [username, setUsername] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [cPassword, cSetPassword] = useState();
+
+  const [showAlert, setShowAlert] = useState(false);
+
+  const [alertTitle, setAlertTitle] = useState();
+  const [alertMessage, setAlertMessage] = useState();
+  const [confirmButtonColor, setConfirmButtonColor] = useState();
+
+  const Service = new UserService();
   return (
     <SafeAreaView>
       <View styles={styles.container}>
@@ -35,27 +49,66 @@ const RegisterScreen = ({ navigation }) => {
         <TextInput
           style={styles.inputEmail}
           placeholder={usernamePlaceholder}
+          onChangeText={(text) => setUsername(text)}
         />
         <TextInput
           style={styles.inputPassword}
           placeholder={emailPlaceholder}
+          onChangeText={(text) => setEmail(text)}
         />
         <TextInput
           style={styles.inputPassword}
           placeholder={passwordPlaceholder}
+          onChangeText={(text) => setPassword(text)}
         />
         <TextInput
           style={styles.inputPassword}
           placeholder={confirmPasswordPlaceholder}
+          onChangeText={(text) => cSetPassword(text)}
         />
 
         <Button
-          onPress={() => {}}
+          onPress={async () => {
+            const data = {
+              nickname: username,
+              email: email,
+              password: password,
+              cpassword: cPassword,
+            };
+            const res = await Service.postRegisterUser(data);
+            if ((res.status = 201)) {
+              setAlertTitle("Succesfull");
+              setAlertMessage("User Created");
+              setConfirmButtonColor("green");
+              setShowAlert(true);
+            } else {
+              setAlertTitle("Error");
+              setAlertMessage("Something gone wrong");
+              setConfirmButtonColor("red");
+              setShowAlert(true);
+            }
+          }}
           containerStyle={styles.loginButtonContainer}
           buttonStyle={styles.loginButton}
         >
           Register
         </Button>
+        <AwesomeAlert
+          show={showAlert}
+          showProgress={false}
+          title={alertTitle}
+          message={alertMessage}
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showConfirmButton={true}
+          confirmText="OK"
+          confirmButtonColor={confirmButtonColor}
+          onConfirmPressed={() => {
+            if (alertTitle == "Succesfull") {
+              navigation.goBack();
+            }
+          }}
+        />
       </View>
     </SafeAreaView>
   );

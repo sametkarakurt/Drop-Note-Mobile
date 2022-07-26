@@ -6,7 +6,9 @@ import { Button } from "@rneui/base";
 
 import { StyleSheet } from "react-native";
 
+
 const HomeScreen = ({ navigation }) => {
+ 
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState();
   const updateSearch = (search) => {
