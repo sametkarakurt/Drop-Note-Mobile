@@ -1,19 +1,30 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, Button, Dimensions } from "react-native";
-import HomeScreen from "../../Screens/HomeScreen/homeScreen";
-import ProfileScreen from "../../Screens/ProfileScreen/profileScreen";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Button,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
+import { useAuth } from "../../Store/AuthContext";
 import { Card } from "@rneui/themed";
 import { Stack, HStack, VStack } from "react-native-flex-layout";
 import { Avatar } from "@react-native-material/core";
 const { width: WIDTH } = Dimensions.get("window");
-import { FAB } from "@rneui/themed";
+import { useNavigation } from "@react-navigation/native";
+import MessageService from "../../Services/messageService";
 1;
+import Feather from "react-native-vector-icons/Feather";
 const NoteCard = (data) => {
+  const [user] = useAuth();
+  const Service = new MessageService(user.token);
+  const navigation = useNavigation();
   const [postDate, setPostDate] = useState("");
+
+  const [userData, setUserData] = useState("");
   React.useEffect(() => {
-    console.log(data.item);
+    console.log(data);
     const lastIndex = data.item.item.created_at.indexOf("T");
     setPostDate(data.item.item.created_at.substring(0, lastIndex));
   }, []);
@@ -22,10 +33,35 @@ const NoteCard = (data) => {
       <Card containerStyle={styles.card}>
         <VStack>
           <HStack>
-            <Avatar style={styles.avatar} label="Kent Dodds" color="black" />
+            <TouchableOpacity
+              disabled={
+                data.item.item.nickname === data.currentUser.nickname
+                  ? true
+                  : false
+              }
+              onPress={() => {
+                navigation.navigate("UserProfile", {
+                  guestId: data.item.item.userid,
+                });
+              }}
+            >
+              <Avatar
+                style={styles.avatar}
+                label={data.item.item.nickname}
+                color="black"
+              />
+            </TouchableOpacity>
             <VStack style={styles.userInfo}>
               {data.item.item.is_anonymus == false ? (
-                <Text style={styles.username}>Username</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("UserProfile", {
+                      guestId: data.item.item.userid,
+                    });
+                  }}
+                >
+                  <Text style={styles.username}>{data.item.item.nickname}</Text>
+                </TouchableOpacity>
               ) : null}
               <Text style={styles.headline}>{postDate}</Text>
             </VStack>
@@ -35,13 +71,23 @@ const NoteCard = (data) => {
           </Text>
         </VStack>
       </Card>
+      {data.item.item.nickname === data.currentUser.nickname ? (
+        <TouchableOpacity
+          onPress={() => {
+            Service.deleteMessage({
+              id: data.item.item.userid,
+              message: data.item.item.notetext,
+            });
+          }}
+          style={{ position: "absolute", right: 30, bottom: 10 }}
+        >
+          <Feather name="trash-2" size={20} />
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
 const styles = StyleSheet.create({
-  fab: {
-    marginRight: 10,
-  },
   card: {
     width: WIDTH - 40,
     borderRadius: 12,

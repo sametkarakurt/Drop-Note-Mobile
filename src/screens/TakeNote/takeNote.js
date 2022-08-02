@@ -8,7 +8,7 @@ import { useAuth } from "../../Store/AuthContext";
 const TakeNote = ({ navigation, route }) => {
   const context = useContext(Context);
   const [user] = useAuth();
-  const Service = new NoteService(user);
+  const Service = new NoteService(user.token);
   const [note, setNote] = useState();
   return (
     <View style={{ justifyContent: "center", alignItems: "center" }}>

@@ -3,6 +3,9 @@ import axios from "axios";
 import { Context } from "../Store/context";
 
 class UserService {
+  constructor(token) {
+    this.token = token;
+  }
   baseURL = "http://localhost:3000";
   postLoginUser = async (data) => {
     const res = await axios.post(`${this.baseURL}/profile/login`, data);
@@ -11,6 +14,33 @@ class UserService {
   postRegisterUser = (data) => {
     const res = axios.post(`${this.baseURL}/profile/register`, data);
     return res;
+  };
+
+  getUser = async (key) => {
+    const res = await axios
+      .create({
+        baseURL: "http://localhost:3000",
+        headers: {
+          access_token: this.token,
+        },
+      })
+      .get(`/profile/${key}`);
+
+    console.log(res.data);
+    return res.data;
+  };
+
+  getCurrentUser = async () => {
+    const res = await axios
+      .create({
+        baseURL: "http://localhost:3000",
+        headers: {
+          access_token: this.token,
+        },
+      })
+      .get("/profile");
+
+    return res.data;
   };
 }
 
