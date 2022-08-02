@@ -11,7 +11,7 @@ function BottomTabNavigator() {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarStyle: {
-          backgroundColor: "#1E232C",
+          backgroundColor: "black",
           height: 92,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,

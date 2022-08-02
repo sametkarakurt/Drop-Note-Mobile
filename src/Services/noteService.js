@@ -29,6 +29,21 @@ class NoteService {
       })
       .post(`/${key}`, data);
   };
+
+  deleteNote = (key) => {
+    try {
+      axios
+        .create({
+          baseURL: "http://localhost:3000/notes",
+          headers: {
+            access_token: this.token,
+          },
+        })
+        .delete(`/${key}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 }
 
 export default NoteService;

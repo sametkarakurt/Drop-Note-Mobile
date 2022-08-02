@@ -53,15 +53,11 @@ const NoteDetail = ({ navigation, route }) => {
   );
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-    >
+    <SafeAreaView style={{ flex: 1 }}>
       <StatusBar barStyle="light-content" />
       {data.length > 0 ? (
         <FlatList data={data} renderItem={renderItem} />
-      ) : (
-        <Text>Not ekleyen olmamış. İlk notu siz ekleyin.</Text>
-      )}
+      ) : null}
 
       <FAB
         placement="right"

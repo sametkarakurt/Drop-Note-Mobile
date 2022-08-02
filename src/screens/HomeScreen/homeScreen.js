@@ -83,7 +83,7 @@ const HomeScreen = ({ navigation }) => {
 };
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "black",
+    backgroundColor: "#1E232C",
     width: "95%",
     borderRadius: 30,
     justifyContent: "flex-end",
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     fontWeight: "bold",
     fontSize: 25,
-    lineHeight: "32",
+    lineHeight: 32,
     marginHorizontal: 20,
     marginTop: 26,
   },

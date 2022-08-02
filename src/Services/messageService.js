@@ -19,22 +19,6 @@ class MessageService {
     console.log(res.data);
     return res.data;
   };
-
-  deleteMessage = async (data) => {
-    try {
-      const res = axios
-        .create({
-          baseURL: "http://localhost:3000",
-          headers: {
-            access_token: this.token,
-          },
-        })
-        .delete("/messages", data);
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 }
 
 export default MessageService;
