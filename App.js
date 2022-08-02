@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { TouchableOpacity } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -14,6 +15,7 @@ import { Context } from "./src/Store/context";
 import AuthProvider, { useAuth } from "./src/Store/AuthContext";
 import ChatScreen from "./src/Screens/ChatScreen/chatScreen";
 import UserProfile from "./src/Screens/UserProfile/UserProfile";
+import Ionicons from "react-native-vector-icons/Ionicons";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -41,14 +43,45 @@ const Navigator = () => {
     );
   }
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "black",
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
+      }}
+    >
       <Stack.Screen
         name="HomeTabNavigator"
         options={{ headerShown: false }}
         component={BottomTabNavigator}
       />
-      <Stack.Screen name="TakeNote" component={TakeNote} />
-      <Stack.Screen name="NoteDetail" component={NoteDetail} />
+      <Stack.Screen
+        name="TakeNote"
+        component={TakeNote}
+        options={({ route }) => ({
+          headerBackTitle: "Vazgeç",
+          title: route.params.title,
+          saveData: route.params.saveData,
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={route.params.saveData}
+              title="Info"
+              color="#fff"
+            >
+              <Ionicons size={24} color={"white"} name={"save-outline"} />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="NoteDetail"
+        component={NoteDetail}
+        options={({ route }) => ({ title: route.params.title })}
+      />
       <Stack.Screen name="ChatScreen" component={ChatScreen} />
       <Stack.Screen name="UserProfile" component={UserProfile} />
     </Stack.Navigator>

@@ -1,16 +1,33 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Text, View } from "react-native";
 import { Searchbar, Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import UserService from "../../Services/userService";
 import { StyleSheet } from "react-native";
-
+import { useAuth } from "../../Store/AuthContext";
 const HomeScreen = ({ navigation }) => {
+  const [user] = useAuth();
+  const Service = new UserService(user.token);
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState();
   const updateSearch = (search) => {
     setSearch(search);
   };
+  const [currentUser, setCurrentUser] = useState("");
+  useEffect(() => {
+    const getData = async () => {
+      await Service.getCurrentUser()
+        .then((response) => {
+          console.log(response);
+          setCurrentUser(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    getData();
+  }, []);
+
   return (
     <SafeAreaView
       style={{
@@ -18,9 +35,19 @@ const HomeScreen = ({ navigation }) => {
         alignItems: "center",
       }}
     >
+      <View style={{ flex: 1 }}></View>
+      <View
+        style={{
+          width: "90%",
+        }}
+      >
+        <Text style={styles.hello}>Hello,</Text>
+        <Text style={styles.nickName}>{currentUser.nickname}</Text>
+      </View>
+
       <View style={styles.card}>
         <View style={{ alignItems: "flex-start", justifyContent: "flex-end" }}>
-          <Text style={styles.cardTitle}>Hello , search and write a note</Text>
+          <Text style={styles.cardTitle}>Search and Write a Note</Text>
         </View>
 
         <Searchbar
@@ -38,7 +65,10 @@ const HomeScreen = ({ navigation }) => {
             mode="contained"
             onPress={async () => {
               if (search.length > 0) {
-                navigation.navigate("NoteDetail", { key: search });
+                navigation.navigate("NoteDetail", {
+                  title: search,
+                  key: search,
+                });
               }
             }}
           >
@@ -46,6 +76,8 @@ const HomeScreen = ({ navigation }) => {
           </Button>
         </View>
       </View>
+      <View style={{ flex: 1 }}></View>
+      <View style={{ flex: 1 }}></View>
     </SafeAreaView>
   );
 };
@@ -53,9 +85,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "black",
     width: "95%",
-
     borderRadius: 30,
-
     justifyContent: "flex-end",
   },
   cardTitle: {
@@ -93,6 +123,21 @@ const styles = StyleSheet.create({
   },
   searchbarInput: {
     color: "black",
+  },
+  hello: {
+    fontWeight: "bold",
+    fontSize: 46,
+    lineHeight: 52,
+    fontStyle: "normal",
+    letterSpacing: 1,
+  },
+  nickName: {
+    fontWeight: "normal",
+    fontSize: 36,
+    color: "#A1A4B2",
+    lineHeight: 42,
+    fontStyle: "normal",
+    marginBottom: 30,
   },
 });
 export default HomeScreen;

@@ -24,9 +24,10 @@ const NoteCard = (data) => {
 
   const [userData, setUserData] = useState("");
   React.useEffect(() => {
-    console.log(data);
-    const lastIndex = data.item.item.created_at.indexOf("T");
-    setPostDate(data.item.item.created_at.substring(0, lastIndex));
+    if (data.item.item.created_at) {
+      const lastIndex = data.item.item.created_at.indexOf("T");
+      setPostDate(data.item.item.created_at.substring(0, lastIndex));
+    }
   }, []);
   return (
     <View>
@@ -34,11 +35,6 @@ const NoteCard = (data) => {
         <VStack>
           <HStack>
             <TouchableOpacity
-              disabled={
-                data.item.item.nickname === data.currentUser.nickname
-                  ? true
-                  : false
-              }
               onPress={() => {
                 navigation.navigate("UserProfile", {
                   guestId: data.item.item.userid,
@@ -47,7 +43,11 @@ const NoteCard = (data) => {
             >
               <Avatar
                 style={styles.avatar}
-                label={data.item.item.nickname}
+                label={
+                  data.profileData
+                    ? data.currentUser.nickname
+                    : data.item.item.nickname
+                }
                 color="black"
               />
             </TouchableOpacity>
@@ -60,7 +60,11 @@ const NoteCard = (data) => {
                     });
                   }}
                 >
-                  <Text style={styles.username}>{data.item.item.nickname}</Text>
+                  <Text style={styles.username}>
+                    {data.profileData
+                      ? data.currentUser.nickname
+                      : data.item.item.nickname}
+                  </Text>
                 </TouchableOpacity>
               ) : null}
               <Text style={styles.headline}>{postDate}</Text>
@@ -71,7 +75,8 @@ const NoteCard = (data) => {
           </Text>
         </VStack>
       </Card>
-      {data.item.item.nickname === data.currentUser.nickname ? (
+      {data.item.item.nickname === data.currentUser.nickname ||
+      data.profileData ? (
         <TouchableOpacity
           onPress={() => {
             Service.deleteMessage({

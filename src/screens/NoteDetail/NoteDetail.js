@@ -1,5 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Text, View, FlatList, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  FlatList,
+  StyleSheet,
+  StatusBar,
+  SafeAreaView,
+} from "react-native";
 import { FAB } from "@rneui/themed";
 import NoteCard from "../../Components/NoteCard/noteCard";
 import NoteService from "../../Services/noteService";
@@ -31,6 +38,7 @@ const NoteDetail = ({ navigation, route }) => {
         });
       await Service.fetchNote(route.params.key)
         .then((response) => {
+          console.log(response);
           setData(response);
         })
         .catch((error) => {
@@ -41,11 +49,14 @@ const NoteDetail = ({ navigation, route }) => {
   }, [context.notesSituation]);
 
   const renderItem = (item) => (
-    <NoteCard item={item} currentUser={currentUser} />
+    <NoteCard item={item} currentUser={currentUser} profileData={false} />
   );
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <SafeAreaView
+      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+    >
+      <StatusBar barStyle="light-content" />
       {data.length > 0 ? (
         <FlatList data={data} renderItem={renderItem} />
       ) : (
@@ -55,14 +66,17 @@ const NoteDetail = ({ navigation, route }) => {
       <FAB
         placement="right"
         onPress={() => {
-          navigation.navigate("TakeNote", { key: route.params.key });
+          navigation.navigate("TakeNote", {
+            title: route.params.key,
+            key: route.params.key,
+          });
         }}
         visible={true}
         icon={{ name: "add", color: "white" }}
         color="black"
         style={styles.fab}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

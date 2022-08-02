@@ -7,13 +7,25 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 function BottomTabNavigator() {
   const Tab = createBottomTabNavigator();
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          backgroundColor: "#1E232C",
+          height: 92,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+        },
+      }}
+    >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
           headerShown: false,
-          tabBarIcon: () => <FontAwesome name="home" size={26} />,
+          tabBarIcon: () => (
+            <FontAwesome color={"white"} name="home" size={32} />
+          ),
         }}
       />
 
@@ -22,7 +34,9 @@ function BottomTabNavigator() {
         component={ProfileScreen}
         options={{
           headerShown: false,
-          tabBarIcon: () => <FontAwesome name="user" size={26} />,
+          tabBarIcon: () => (
+            <FontAwesome color={"white"} name="user" size={32} />
+          ),
         }}
       />
     </Tab.Navigator>

@@ -42,6 +42,18 @@ class UserService {
 
     return res.data;
   };
+
+  getUserNotes = async (key) => {
+    var res = await axios
+      .create({
+        baseURL: "http://localhost:3000/profile",
+        headers: {
+          access_token: this.token,
+        },
+      })
+      .get(`/${key}/notes`);
+    return res.data;
+  };
 }
 
 export default UserService;
