@@ -25,6 +25,7 @@
     "react-native-awesome-alerts": "^2.0.0",
     "react-native-floating-action": "^1.22.0",
     "react-native-gifted-chat": "^1.0.4",
+    "react-native-modal": "^13.0.1",
     "react-native-paper": "^4.12.4",
     "react-native-web": "0.17.7"
   },

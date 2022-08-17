@@ -14,6 +14,7 @@ import { Context } from "../../Store/context";
 import { useAuth } from "../../Store/AuthContext";
 import { LogBox } from "react-native";
 import UserService from "../../Services/userService";
+
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state.",
 ]);
@@ -27,6 +28,7 @@ const NoteDetail = ({ navigation, route }) => {
   const userService = new UserService(user.token);
   const [currentUser, setCurrentUser] = useState();
   useEffect(() => {
+    console.log(route.params.key);
     const getData = async () => {
       await userService
         .getCurrentUser()

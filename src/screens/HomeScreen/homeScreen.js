@@ -28,6 +28,14 @@ const HomeScreen = ({ navigation }) => {
     getData();
   }, []);
 
+  const toTitleCaseTR = (str) => {
+    return str
+      .toLocaleLowerCase("tr-TR")
+      .replace(/(?:^|\s|,|;|!|:|-|\.|\?)[a-z0-9ğçşüöı]/g, function (match) {
+        return match.toLocaleUpperCase("tr-TR");
+      });
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -56,6 +64,7 @@ const HomeScreen = ({ navigation }) => {
           value={search}
           style={styles.searchbar}
           inputStyle={styles.searchbarInput}
+          autoCapitalize="none"
         />
         <View style={{ alignItems: "center" }}>
           <Button
@@ -65,9 +74,11 @@ const HomeScreen = ({ navigation }) => {
             mode="contained"
             onPress={async () => {
               if (search.length > 0) {
+                var searchKey = toTitleCaseTR(search);
+                searchKey = searchKey.toUpperCase();
                 navigation.navigate("NoteDetail", {
                   title: search,
-                  key: search,
+                  key: searchKey,
                 });
               }
             }}

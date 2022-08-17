@@ -50,21 +50,28 @@ const RegisterScreen = ({ navigation }) => {
           style={styles.inputEmail}
           placeholder={usernamePlaceholder}
           onChangeText={(text) => setUsername(text)}
+          autoCapitalize="none"
+          keyboardType="email-address"
         />
         <TextInput
           style={styles.inputPassword}
           placeholder={emailPlaceholder}
           onChangeText={(text) => setEmail(text)}
+          autoCapitalize="none"
+          secureTextEntry={true}
         />
         <TextInput
           style={styles.inputPassword}
           placeholder={passwordPlaceholder}
           onChangeText={(text) => setPassword(text)}
+          autoCapitalize="none"
+          secureTextEntry={true}
         />
         <TextInput
           style={styles.inputPassword}
           placeholder={confirmPasswordPlaceholder}
           onChangeText={(text) => cSetPassword(text)}
+          autoCapitalize="none"
         />
 
         <Button

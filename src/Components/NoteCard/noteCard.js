@@ -14,16 +14,19 @@ import { Avatar } from "@react-native-material/core";
 const { width: WIDTH } = Dimensions.get("window");
 import { useNavigation } from "@react-navigation/native";
 import Feather from "react-native-vector-icons/Feather";
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { Context } from "../../Store/context";
 import NoteService from "../../Services/noteService";
+import Modal from "react-native-modal";
 const NoteCard = (data) => {
   const [user] = useAuth();
   const context = useContext(Context);
   const Service = new NoteService(user.token);
   const navigation = useNavigation();
   const [postDate, setPostDate] = useState("");
-
+  const [isModalVisible, setModalVisible] = useState(false);
   const [userData, setUserData] = useState("");
+  const windowWidth = Dimensions.get("window").width;
   React.useEffect(() => {
     if (data.item.item.created_at) {
       const lastIndex = data.item.item.created_at.indexOf("T");
@@ -39,11 +42,20 @@ const NoteCard = (data) => {
             <HStack>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("UserProfile", {
-                    guestId: data.item.item.userid,
-                  });
+                  setModalVisible(!isModalVisible);
                 }}
               >
+                <Modal isVisible={isModalVisible}>
+                  <View style={styles.content}>
+                    <Text style={styles.contentTitle}>Hi 👋!</Text>
+                    <Button
+                      onPress={() => {
+                        setModalVisible(!isModalVisible);
+                      }}
+                      title="Close"
+                    />
+                  </View>
+                </Modal>
                 <Avatar
                   style={styles.avatar}
                   label={
@@ -58,9 +70,7 @@ const NoteCard = (data) => {
                 {data.item.item.is_anonymus == false ? (
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate("UserProfile", {
-                        guestId: data.item.item.userid,
-                      });
+                      setModalVisible(!isModalVisible);
                     }}
                   >
                     <Text style={styles.username}>
@@ -78,18 +88,33 @@ const NoteCard = (data) => {
             </Text>
           </VStack>
         </Card>
-        {data.item.item.nickname === data.currentUser.nickname ||
-        data.profileData ? (
+        <View style={styles.buttons}>
           <TouchableOpacity
             onPress={async () => {
               await Service.deleteNote(data.item.item.id);
               context.changeNoteSituation();
             }}
-            style={{ position: "absolute", right: 30, bottom: 10 }}
+            style={{ position: "absolute", right: "87.5%", bottom: 10 }}
           >
-            <Feather name="trash-2" size={20} />
+            <SimpleLineIcons name="like" size={20} />
           </TouchableOpacity>
-        ) : null}
+
+          <Text style={{ position: "absolute", right: "83.5%", bottom: 10 }}>
+            {data.item.item.likecount}
+          </Text>
+          {data.item.item.nickname === data.currentUser.nickname ||
+          data.profileData ? (
+            <TouchableOpacity
+              onPress={async () => {
+                await Service.deleteNote(data.item.item.id);
+                context.changeNoteSituation();
+              }}
+              style={{ position: "absolute", right: "7.5%", bottom: 10 }}
+            >
+              <Feather name="trash-2" size={20} />
+            </TouchableOpacity>
+          ) : null}
+        </View>
       </View>
     );
   } else {
@@ -100,6 +125,7 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 12,
     padding: 24,
+    paddingBottom: 45,
     alignItems: "flex-start",
   },
   message: {
@@ -128,5 +154,18 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     display: "flex",
   },
+  content: {
+    backgroundColor: "white",
+    padding: 22,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "rgba(0, 0, 0, 0.1)",
+  },
+  contentTitle: {
+    fontSize: 20,
+    marginBottom: 12,
+  },
+  buttons: { marginVertical: -2.5 },
 });
 export default NoteCard;
