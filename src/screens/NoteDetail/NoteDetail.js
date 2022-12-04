@@ -58,8 +58,16 @@ const NoteDetail = ({ navigation, route }) => {
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar barStyle="light-content" />
       {data.length > 0 ? (
-        <FlatList data={data} renderItem={renderItem} />
-      ) : null}
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          contentContainerStyle={{ paddingBottom: 20 }}
+        />
+      ) : (
+        <Text style={styles.alertNote}>
+          Not ekleyen olmamış. İlk notu siz ekleyin.
+        </Text>
+      )}
 
       <FAB
         placement="right"
@@ -82,6 +90,19 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 5,
     bottom: 10,
+  },
+  alertNote: {
+    color: "black",
+    paddingTop: 30,
+    padding: 30,
+    backgroundColor: "white",
+    width: "100%",
+    height: "100%",
+    borderRadius: 10,
+    marginBottom: 20,
+    fontSize: 19,
+    fontWeight: "bold",
+    fontStyle: "normal",
   },
 });
 export default NoteDetail;

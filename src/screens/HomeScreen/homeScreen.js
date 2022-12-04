@@ -49,17 +49,17 @@ const HomeScreen = ({ navigation }) => {
           width: "90%",
         }}
       >
-        <Text style={styles.hello}>Hello,</Text>
+        <Text style={styles.hello}>Merhaba,</Text>
         <Text style={styles.nickName}>{currentUser.nickname}</Text>
       </View>
 
       <View style={styles.card}>
         <View style={{ alignItems: "flex-start", justifyContent: "flex-end" }}>
-          <Text style={styles.cardTitle}>Search and Write a Note</Text>
+          <Text style={styles.cardTitle}>Ara ve Not Yaz</Text>
         </View>
 
         <Searchbar
-          placeholder="Search"
+          placeholder="Ara"
           onChangeText={updateSearch}
           value={search}
           style={styles.searchbar}
@@ -69,7 +69,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={{ alignItems: "center" }}>
           <Button
             color="white"
-            textColor="red"
+            textColor="black"
             style={styles.searchButton}
             mode="contained"
             onPress={async () => {
@@ -83,7 +83,7 @@ const HomeScreen = ({ navigation }) => {
               }
             }}
           >
-            Search
+            Ara
           </Button>
         </View>
       </View>
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     color: "white",
-    width: 190,
+    width: 120,
     height: 101,
     fontStyle: "normal",
     fontWeight: "bold",

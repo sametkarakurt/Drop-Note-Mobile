@@ -105,7 +105,7 @@ const ProfileScreen = () => {
           marginHorizontal: 20,
         }}
       >
-        Notes
+        Notlar
       </Text>
       <Divider
         width={1}
@@ -114,14 +114,12 @@ const ProfileScreen = () => {
       />
       {userNotes.length > 0 ? (
         <FlatList
-          style={{ marginTop: 5 }}
+          style={{ marginTop: 5, marginBottom: 140 }}
           contentContainerStyle={{ paddingBottom: 75 }}
           data={userNotes}
           renderItem={renderItem}
         />
-      ) : (
-        <Text>Not ekleyen olmamış. İlk notu siz ekleyin.</Text>
-      )}
+      ) : null}
     </SafeAreaView>
   );
 };

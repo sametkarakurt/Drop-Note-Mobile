@@ -1,4 +1,4 @@
-const url = "http://localhost:3000/";
+const url = "http://31.223.19.17:3000/";
 function FriendService() {
   return null;
 }

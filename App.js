@@ -13,8 +13,6 @@ import NoteCard from "./src/Components/NoteCard/noteCard";
 import RegisterScreen from "./src/Screens/RegisterScreen/registerScreen";
 import { Context } from "./src/Store/context";
 import AuthProvider, { useAuth } from "./src/Store/AuthContext";
-import ChatScreen from "./src/Screens/ChatScreen/chatScreen";
-import UserProfile from "./src/Screens/UserProfile/UserProfile";
 import Ionicons from "react-native-vector-icons/Ionicons";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -80,10 +78,11 @@ const Navigator = () => {
       <Stack.Screen
         name="NoteDetail"
         component={NoteDetail}
-        options={({ route }) => ({ title: route.params.title })}
+        options={({ route }) => ({
+          title: route.params.title,
+          headerBackTitle: "",
+        })}
       />
-      <Stack.Screen name="ChatScreen" component={ChatScreen} />
-      <Stack.Screen name="UserProfile" component={UserProfile} />
     </Stack.Navigator>
   );
 };

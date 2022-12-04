@@ -7,7 +7,7 @@ const { width: WIDTH } = Dimensions.get("window");
 const { height: HEIGHT } = Dimensions.get("window");
 const WelcomeScreen = ({ navigation }) => {
   const image = {
-    uri: "/Users/sametkarakurt/Drop-Note-Mobile/assets/welcomeBackground.png",
+    uri: "../../../assets/welcomeBackground.png",
   };
   return (
     <View style={styles.container}>
@@ -18,7 +18,7 @@ const WelcomeScreen = ({ navigation }) => {
           }}
           buttonStyle={styles.loginButton}
         >
-          Login
+          Giriş Yap
         </Button>
         <Button
           onPress={() => {
@@ -27,7 +27,7 @@ const WelcomeScreen = ({ navigation }) => {
           buttonStyle={styles.registerButton}
           titleStyle={styles.registerTitle}
         >
-          Register
+          Üye Ol
         </Button>
       </ImageBackground>
     </View>
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
 
   registerButton: {
-    backgroundColor: "rgb(211, 220, 223)",
+    backgroundColor: "#1E232C",
     width: WIDTH - 20,
     height: 56,
     borderRadius: 8,

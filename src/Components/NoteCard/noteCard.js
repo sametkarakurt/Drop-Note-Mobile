@@ -40,32 +40,16 @@ const NoteCard = (data) => {
         <Card containerStyle={styles.card}>
           <VStack>
             <HStack>
-              <TouchableOpacity
-                onPress={() => {
-                  setModalVisible(!isModalVisible);
-                }}
-              >
-                <Modal isVisible={isModalVisible}>
-                  <View style={styles.content}>
-                    <Text style={styles.contentTitle}>Hi 👋!</Text>
-                    <Button
-                      onPress={() => {
-                        setModalVisible(!isModalVisible);
-                      }}
-                      title="Close"
-                    />
-                  </View>
-                </Modal>
-                <Avatar
-                  style={styles.avatar}
-                  label={
-                    data.profileData
-                      ? data.currentUser.nickname
-                      : data.item.item.nickname
-                  }
-                  color="black"
-                />
-              </TouchableOpacity>
+              <Avatar
+                style={styles.avatar}
+                label={
+                  data.profileData
+                    ? data.currentUser.nickname
+                    : data.item.item.nickname
+                }
+                color="black"
+              />
+
               <VStack style={styles.userInfo}>
                 {data.item.item.is_anonymus == false ? (
                   <TouchableOpacity
@@ -89,15 +73,15 @@ const NoteCard = (data) => {
           </VStack>
         </Card>
         <View style={styles.buttons}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={async () => {
-              await Service.deleteNote(data.item.item.id);
-              context.changeNoteSituation();
+              // await Service.deleteNote(data.item.item.id);
+              // context.changeNoteSituation();
             }}
             style={{ position: "absolute", right: "87.5%", bottom: 10 }}
           >
             <SimpleLineIcons name="like" size={20} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <Text style={{ position: "absolute", right: "83.5%", bottom: 10 }}>
             {data.item.item.likecount}
@@ -132,7 +116,7 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     lineHeight: 18,
     marginTop: 29.5,
-
+    marginBottom: 2.5,
     fontSize: 14,
     lineHeight: 18,
     color: "#666666",

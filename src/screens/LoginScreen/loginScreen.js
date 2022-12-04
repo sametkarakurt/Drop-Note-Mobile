@@ -13,15 +13,19 @@ const { width: WIDTH } = Dimensions.get("window");
 import UserService from "../../Services/userService";
 import { Context } from "../../Store/context";
 import { useAuth } from "../../Store/AuthContext";
+import AwesomeAlert from "react-native-awesome-alerts";
+import { ValidateEmail } from "../../Utils/utils";
 const LoginScreen = ({ navigation }) => {
   const [user, setUser] = useAuth();
-  const welcomeText = "Welcome back! Glad to see you, Again!";
-  const emailPlaceholder = "Enter your email";
-  const passwordPlaceholder = "Enter your password";
-
+  const welcomeText = "Hoşgeldin. Seni tekrar görmek güzel !";
+  const emailPlaceholder = "E-Posta";
+  const passwordPlaceholder = "Şifre";
+  const [showAlert, setShowAlert] = useState(false);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-
+  const [alertTitle, setAlertTitle] = useState();
+  const [alertMessage, setAlertMessage] = useState();
+  const [confirmButtonColor, setConfirmButtonColor] = useState();
   const Service = new UserService();
 
   const context = useContext(Context);
@@ -37,7 +41,7 @@ const LoginScreen = ({ navigation }) => {
         >
           <Image
             style={styles.backImage}
-            source={require("/Users/sametkarakurt/Drop-Note-Mobile/assets/back_arrow.png")}
+            source={require("../../../assets/back_arrow.png")}
           />
         </Button>
         <Text style={styles.welcomeText}>{welcomeText}</Text>
@@ -58,22 +62,50 @@ const LoginScreen = ({ navigation }) => {
 
         <Button
           onPress={async () => {
-            const data = {
-              email: email,
-              password: password,
-            };
-            const res = await Service.postLoginUser(data);
+            if (email && ValidateEmail(email)) {
+              const data = {
+                email: email,
+                password: password,
+              };
 
-            if (res.status == 200) {
-              setUser(res.data.token);
+              try {
+                const res = await Service.postLoginUser(data);
+                if (res.status == 200) {
+                  setUser(res.data.token);
+                }
+              } catch (error) {
+                setAlertTitle("Hata");
+                setAlertMessage("Something gone wrong");
+                setConfirmButtonColor("red");
+                setShowAlert(true);
+              }
+            } else {
+              setAlertTitle("Hata");
+              setAlertMessage("Something gone wrong");
+              setConfirmButtonColor("red");
+              setShowAlert(true);
             }
           }}
           containerStyle={styles.loginButtonContainer}
           buttonStyle={styles.loginButton}
         >
-          Login
+          Giriş Yap
         </Button>
-        <Text>{user}</Text>
+
+        <AwesomeAlert
+          show={showAlert}
+          showProgress={false}
+          title={alertTitle}
+          message={alertMessage}
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showConfirmButton={true}
+          confirmText="OK"
+          confirmButtonColor={confirmButtonColor}
+          onConfirmPressed={() => {
+            setShowAlert(false);
+          }}
+        />
       </View>
     </SafeAreaView>
   );
@@ -98,7 +130,7 @@ const styles = StyleSheet.create({
   welcomeText: {
     marginTop: 28,
     marginHorizontal: 22,
-    width: 300,
+    width: 400,
     height: 78,
     fontSize: 30,
     fontWeight: "bold",

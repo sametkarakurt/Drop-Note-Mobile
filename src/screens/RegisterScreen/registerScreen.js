@@ -12,12 +12,17 @@ import { Button } from "@rneui/themed";
 const { width: WIDTH } = Dimensions.get("window");
 import UserService from "../../Services/userService";
 import AwesomeAlert from "react-native-awesome-alerts";
+import {
+  ValidateEmail,
+  CheckPassword,
+  CheckSamePassword,
+} from "../../Utils/utils";
 const RegisterScreen = ({ navigation }) => {
-  const welcomeText = "Hello! Register to get started";
-  const emailPlaceholder = "Email";
-  const usernamePlaceholder = "Username";
-  const passwordPlaceholder = "Password";
-  const confirmPasswordPlaceholder = "Confirm password";
+  const welcomeText = "Merhaba! Başlamak için kayıt olun";
+  const emailPlaceholder = "E-Posta";
+  const usernamePlaceholder = "Kullanıcı Adı";
+  const passwordPlaceholder = "Şifre";
+  const confirmPasswordPlaceholder = "Şifre (Tekrar)";
 
   const [username, setUsername] = useState();
   const [email, setEmail] = useState();
@@ -42,7 +47,7 @@ const RegisterScreen = ({ navigation }) => {
         >
           <Image
             style={styles.backImage}
-            source={require("/Users/sametkarakurt/Drop-Note-Mobile/assets/back_arrow.png")}
+            source={require("../../../assets/back_arrow.png")}
           />
         </Button>
         <Text style={styles.welcomeText}>{welcomeText}</Text>
@@ -58,7 +63,6 @@ const RegisterScreen = ({ navigation }) => {
           placeholder={emailPlaceholder}
           onChangeText={(text) => setEmail(text)}
           autoCapitalize="none"
-          secureTextEntry={true}
         />
         <TextInput
           style={styles.inputPassword}
@@ -72,22 +76,37 @@ const RegisterScreen = ({ navigation }) => {
           placeholder={confirmPasswordPlaceholder}
           onChangeText={(text) => cSetPassword(text)}
           autoCapitalize="none"
+          secureTextEntry={true}
         />
 
         <Button
           onPress={async () => {
-            const data = {
-              nickname: username,
-              email: email,
-              password: password,
-              cpassword: cPassword,
-            };
-            const res = await Service.postRegisterUser(data);
-            if ((res.status = 201)) {
-              setAlertTitle("Succesfull");
-              setAlertMessage("User Created");
-              setConfirmButtonColor("green");
-              setShowAlert(true);
+            if (
+              email &&
+              password &&
+              cPassword &&
+              ValidateEmail(email) &&
+              CheckPassword(password) &&
+              CheckSamePassword(password, cPassword)
+            ) {
+              const data = {
+                nickname: username,
+                email: email,
+                password: password,
+                cpassword: cPassword,
+              };
+              const res = await Service.postRegisterUser(data);
+              if ((res.status = 201)) {
+                setAlertTitle("Succesfull");
+                setAlertMessage("User Created");
+                setConfirmButtonColor("green");
+                setShowAlert(true);
+              } else {
+                setAlertTitle("Error");
+                setAlertMessage("Something gone wrong");
+                setConfirmButtonColor("red");
+                setShowAlert(true);
+              }
             } else {
               setAlertTitle("Error");
               setAlertMessage("Something gone wrong");
@@ -113,6 +132,8 @@ const RegisterScreen = ({ navigation }) => {
           onConfirmPressed={() => {
             if (alertTitle == "Succesfull") {
               navigation.goBack();
+            } else {
+              setShowAlert(false);
             }
           }}
         />
