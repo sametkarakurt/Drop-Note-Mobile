@@ -6,7 +6,7 @@ class UserService {
   constructor(token) {
     this.token = token;
   }
-  baseURL = "http://31.223.19.17:3000";
+  baseURL = "";
   postLoginUser = async (data) => {
     const res = await axios.post(`${this.baseURL}/profile/login`, data);
     return res;
@@ -19,7 +19,7 @@ class UserService {
   getUser = async (key) => {
     const res = await axios
       .create({
-        baseURL: "http://31.223.19.17:3000",
+        baseURL: "",
         headers: {
           access_token: this.token,
         },
@@ -33,7 +33,7 @@ class UserService {
   getCurrentUser = async () => {
     const res = await axios
       .create({
-        baseURL: "http://31.223.19.17:3000",
+        baseURL: "",
         headers: {
           access_token: this.token,
         },
@@ -46,7 +46,7 @@ class UserService {
   getUserNotes = async (key) => {
     var res = await axios
       .create({
-        baseURL: "http://31.223.19.17:3000/profile",
+        baseURL: "profile",
         headers: {
           access_token: this.token,
         },

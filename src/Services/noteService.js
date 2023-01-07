@@ -10,7 +10,7 @@ class NoteService {
   fetchNote = async (key) => {
     var res = await axios
       .create({
-        baseURL: "http://31.223.19.17:3000/notes",
+        baseURL: "notes",
         headers: {
           access_token: this.token,
         },
@@ -22,7 +22,7 @@ class NoteService {
   postNote = (data, key) => {
     axios
       .create({
-        baseURL: "http://31.223.19.17:3000/notes",
+        baseURL: "notes",
         headers: {
           access_token: this.token,
         },
@@ -34,7 +34,7 @@ class NoteService {
     try {
       axios
         .create({
-          baseURL: "http://31.223.19.17:3000/notes",
+          baseURL: "notes",
           headers: {
             access_token: this.token,
           },

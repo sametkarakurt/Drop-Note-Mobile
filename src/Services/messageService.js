@@ -10,7 +10,7 @@ class MessageService {
   fetchMessage = async (data) => {
     var res = await axios
       .create({
-        baseURL: "http://31.223.19.17:3000",
+        baseURL: "",
         headers: {
           access_token: this.token,
         },
